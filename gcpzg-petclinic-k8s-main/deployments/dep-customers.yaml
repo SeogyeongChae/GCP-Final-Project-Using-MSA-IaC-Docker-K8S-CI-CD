@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customers
+  labels:
+    app: spring-petclinic
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-petclinic
+      tier: customers
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: spring-petclinic
+        tier: customers
+    spec:
+      nodeSelector:
+#        cloud.google.com/gke-nodepool: node-pool-ane-ab
+      containers:
+        - image: asia-northeast3-docker.pkg.dev/hyunyoung-01-368306/gcpzg/spring-petclinic-customers-service:a884d55
+          imagePullPolicy: Always
+          name: customers
+          ports:
+            - containerPort: 8080
+          env:
+          - name: MYSQL_HOSTINFO
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-config
+                key: hostinfo
+          - name: MYSQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credential
+                key: username
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credential
+                key: password
+          - name: spring.profiles.active
+            value: mysql
+          resources:
+            requests:
+              cpu: "200m"
+            limits:
+              cpu: "200m"
+          readinessProbe:
+            httpGet:
+              path: /actuator
+              port: 8080
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+

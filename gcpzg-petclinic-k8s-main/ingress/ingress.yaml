@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    networking.gke.io/managed-certificates: "gcpzg-cert"
+    kubernetes.io/ingress.global-static-ip-name: "ingress-static-ip" # 고정IP 이름
+    kubernetes.io/ingress.class: "gce"
+spec:
+  defaultBackend:
+    service:
+      name: api-gateway
+      port:
+        number: 8080
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 8080
+          - path: /api/customer
+            pathType: Prefix
+            backend:
+              service:
+                name: customers-service
+                port:
+                  number: 8080
+          - path: /api/vet
+            pathType: Prefix
+            backend:
+              service:
+                name: vets-service
+                port:
+                  number: 8080
+          - path: /api/visit
+            pathType: Prefix
+            backend:
+              service:
+                name: visits-service
+                port:
+                  number: 8080
+          - path: /api/gateway
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 8080
