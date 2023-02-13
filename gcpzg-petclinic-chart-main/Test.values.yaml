@@ -1,0 +1,22 @@
+image:
+  api_gateway: asia-northeast3-docker.pkg.dev/hyunyoung-01-368306/gcpzg/spring-petclinic-api-gateway:cb8c1ed
+  customers: asia-northeast3-docker.pkg.dev/hyunyoung-01-368306/gcpzg/spring-petclinic-customers-service:a89341f
+  vets: asia-northeast3-docker.pkg.dev/hyunyoung-01-368306/gcpzg/spring-petclinic-vets-service:02cf505
+  visits: asia-northeast3-docker.pkg.dev/hyunyoung-01-368306/gcpzg/spring-petclinic-visits-service:6de1c22
+
+hostinfo: 10.182.103.12:3306
+public_ip: "ingress-static-ip-test"
+domain: test.petclinic.shop
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "200Mi"
+  limits:
+    cpu: "300m"
+    memory: "300Mi"
+
+replicas: 1
+
+maxReplicas: 1
+minReplicas: 1

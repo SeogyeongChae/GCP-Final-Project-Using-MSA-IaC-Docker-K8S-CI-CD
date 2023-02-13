@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: petclinic-prod
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: 'https://github.com/ryullulala/gcpzg-petclinic-chart'
+    path: .
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - Prod.values.yaml
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: petclinic-msa
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+
