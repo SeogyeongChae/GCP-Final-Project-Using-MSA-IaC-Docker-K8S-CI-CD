@@ -1,3 +1,4 @@
+# gcs 지정
 resource "google_storage_bucket" "gcpzg_gcs" {
   name          = "gcpzg-logging"
   location      = "asia-northeast3" # https://cloud.google.com/storage/docs/locations

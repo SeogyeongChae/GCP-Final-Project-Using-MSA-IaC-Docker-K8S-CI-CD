@@ -3,10 +3,10 @@ resource "google_container_cluster" "gke_ane3_prod" {
   location                 = "asia-northeast3" # GKE 리전 설정
   node_locations           = ["asia-northeast3-a", "asia-northeast3-b", "asia-northeast3-c"] # 노드 위치(Zone) 선택, Default : google_container_cluster.gke_ane3_pro.location을 따라가며 3개 이상의 Zone이 설정됨
   remove_default_node_pool = true # 디폴트 노드 풀 제거
-  initial_node_count       = 1    # 디폴트 노드 풀을 제거할 시 initial_node_count를 1로 설정해주어야함 (공식 문서 피셜)
+  initial_node_count       = 1    # 디폴트 노드 풀을 제거할 시 initial_node_count를 1로 설정
 
   # horizontal pod autoscaling 사용
-  # http lb 설정 사용(HTTP LB 구성을 조금 더 편리하게 할 수 있도록 해줌) => 실제로 보지 못해서 아직 정확히 모르겠음.
+  # http lb 설정 사용(HTTP LB 구성을 조금 더 편리하게 함)
   addons_config {
     horizontal_pod_autoscaling {
       disabled = false # Default = false
@@ -92,10 +92,10 @@ resource "google_container_cluster" "gke_ane3_test" {
   location                 = "asia-northeast3" # GKE 리전 설정
   # node_locations           = ["asia-northeast3-a"] # 노드 위치(Zone) 선택, Default : google_container_cluster.gke_ane3_pro.location을 따라가며 3개 이상의 Zone이 설정됨
   remove_default_node_pool = true # 디폴트 노드 풀 제거
-  initial_node_count       = 1    # 디폴트 노드 풀을 제거할 시 initial_node_count를 1로 설정해주어야함 (공식 문서 피셜)
+  initial_node_count       = 1    # 디폴트 노드 풀을 제거할 시 initial_node_count를 1로 설정
 
   # horizontal pod autoscaling 사용
-  # http lb 설정 사용(HTTP LB 구성을 조금 더 편리하게 할 수 있도록 해줌) => 실제로 보지 못해서 아직 정확히 모르겠음.
+  # http lb 설정 사용(HTTP LB 구성을 조금 더 편리하게 할 수 있도록 해줌)
   addons_config {
     horizontal_pod_autoscaling {
       disabled = false # Default = false
@@ -105,7 +105,7 @@ resource "google_container_cluster" "gke_ane3_test" {
     }
   }
 
-  # 파드 수직 확장 사용 정책
+  # 파드 수직 확장 정책
   vertical_pod_autoscaling {
     enabled = false
   }

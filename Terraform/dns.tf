@@ -14,7 +14,7 @@ resource "google_dns_record_set" "a_record" {
   type         = "A" # Required, | TXT, CNAME ... (DNS Record Set Type)
   ttl          = 300
 
-  # External IP(Ingress)과 연결
+  # External IP(Ingress) 연결
   rrdatas = [google_compute_global_address.ingress_ip.address]
 
   depends_on = [google_compute_global_address.ingress_ip]

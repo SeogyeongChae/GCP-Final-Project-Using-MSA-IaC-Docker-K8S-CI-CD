@@ -1,3 +1,4 @@
+# gar 지정
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/artifact_registry_repository
 resource "google_artifact_registry_repository" "gcpzg_gar" {
   repository_id = "gcpzg-gar" # Required | Name of gar

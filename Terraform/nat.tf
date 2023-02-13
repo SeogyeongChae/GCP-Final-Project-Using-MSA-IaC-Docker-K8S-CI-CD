@@ -1,3 +1,4 @@
+# nat route 설정
 resource "google_compute_router" "nat_router" {
   name    = "gcpzg-nat-router"
   region  = google_compute_subnetwork.gcpzg_subnet_ane3.region

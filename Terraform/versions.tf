@@ -14,7 +14,7 @@ provider "google" {
   zone        = "asia-northeast3-a"
 }
 
-# Terraform Cloud에서 Sensitive 변수(gcp_creds)를 추가해주었음
+# Terraform Cloud에서 Sensitive 변수(gcp_creds) 추가
 variable "gcp_creds" {
   default = ""
 }
