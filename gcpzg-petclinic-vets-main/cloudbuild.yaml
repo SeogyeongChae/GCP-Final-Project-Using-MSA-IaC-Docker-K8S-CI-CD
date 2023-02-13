@@ -1,0 +1,47 @@
+steps:
+  #### Build the container image
+  - name: maven:3-jdk-8
+    entrypoint: mvn
+    args: ['clean','install','-PbuildDocker']
+  #### Tagging
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'tag', '${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_SERVICE_NAME}', '${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_SERVICE_NAME}:$SHORT_SHA']
+  #### Push the container image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', '${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_SERVICE_NAME}:$SHORT_SHA' ]
+  #### This step generates the new manifest ####
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: /bin/sh
+    secretEnv: ['GIT_ACCESS_TOKEN']
+    args:
+      - '-c'
+      - |
+        git clone https://${_GITHUB_ID}:$$GIT_ACCESS_TOKEN@github.com/${_GITHUB_ID}/gcpzg-petclinic-chart.git
+        echo "Updating image tag version ..."
+        cd gcpzg-petclinic-chart
+        sed -i "4s/.*/  vets: ${_LOCATION}-docker.pkg.dev\/$PROJECT_ID\/${_ARTIFACT_REPO}\/${_SERVICE_NAME}:$SHORT_SHA/g" Test.values.yaml
+        echo "Pushing changes to k8s manifest repo ..."
+        git config --global user.name "GCPZG"
+        git config --global user.email "byeongryul.cho@gmail.com"
+        git add -A
+        git commit -m "[Cloud Builder] Updated image tag ${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_SERVICE_NAME}:$SHORT_SHA from commit ${COMMIT_SHA}"
+        git push https://${_GITHUB_ID}:$$GIT_ACCESS_TOKEN@github.com/${_GITHUB_ID}/gcpzg-petclinic-chart.git
+
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_NUMBER/secrets/github-access-token/versions/1
+      env: 'GIT_ACCESS_TOKEN'
+
+
+# Build Logging
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+
+
+
+#  _ARTIFACT_REPO = gcpzg
+#  _GITHUB_ID = ryullulala
+#  _LOCATION = asia-northeast3
+#  _SERVICE_NAME = spring-petclinic-vets-service
