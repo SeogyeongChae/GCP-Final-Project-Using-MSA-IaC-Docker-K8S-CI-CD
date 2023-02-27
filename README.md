@@ -34,4 +34,4 @@
 
 ----
 ## 2. Reference
-https://judy-nick.notion.site/GCP-Final-Project-025cf435d6174936b44b4c9589c53c94
+https://judy-nick.notion.site/GCP-Final-Project-Using-MSA-IaC-Docker-K8S-CI-CD-a45ce755f059420f96dbfc7c43ed8110
